@@ -9,7 +9,7 @@ const App: React.FC = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
 
   const targetDate = useMemo(() => new Date('2025-10-27T19:00:00-05:00'), []); // October 27, 2025, 7:00 PM Colombia Time (COT)
-  const youtubeLink = 'https://www.youtube.com/watch?v=LeVOQQQmWJs';
+  const youtubeLink = 'https://link.automscc.com/CLASE1-L9';
 
   useEffect(() => {
     try {
