@@ -9,6 +9,7 @@ const App: React.FC = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
 
   const targetDate = useMemo(() => new Date('2025-10-27T19:00:00-05:00'), []); // October 27, 2025, 7:00 PM Colombia Time (COT)
+  const youtubeLink = 'https://www.youtube.com/watch?v=LeVOQQQmWJs';
 
   useEffect(() => {
     try {
@@ -46,25 +47,27 @@ const App: React.FC = () => {
   
   const eventDetails = {
     title: 'Fórmula de la Eliminación del Dolor',
-    description: 'Evento virtual y gratuito del 27 al 29 de Octubre de 2025. ¡No te pierdas este evento importante!',
+    description: `Evento virtual y gratuito del 27 al 29 de Octubre de 2025. ¡No te pierdas este evento importante!\n\nEnlace de la clase: ${youtubeLink}`,
     startTimeUTC: '20251028T000000Z', // Oct 27, 7PM COT is Oct 28, 00:00 UTC
     endTimeUTC: '20251030T020000Z', // Ends Oct 29, 9PM COT (approx)
+    location: youtubeLink,
   };
 
-  const googleCalendarLink = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventDetails.title)}&dates=${eventDetails.startTimeUTC}/${eventDetails.endTimeUTC}&details=${encodeURIComponent(eventDetails.description)}`;
+  const googleCalendarLink = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventDetails.title)}&dates=${eventDetails.startTimeUTC}/${eventDetails.endTimeUTC}&details=${encodeURIComponent(eventDetails.description)}&location=${encodeURIComponent(eventDetails.location)}`;
 
   const icsContent = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
     'BEGIN:VEVENT',
-    `URL:${window.location.href}`,
+    `URL:${eventDetails.location}`,
     `DTSTART:${eventDetails.startTimeUTC}`,
     `DTEND:${eventDetails.endTimeUTC}`,
     `SUMMARY:${eventDetails.title}`,
-    `DESCRIPTION:${eventDetails.description}`,
+    `DESCRIPTION:${eventDetails.description.replace(/\n/g, '\\n')}`,
+    `LOCATION:${eventDetails.location}`,
     'END:VEVENT',
     'END:VCALENDAR'
-  ].join('\n');
+  ].join('\r\n');
   const icsLink = `data:text/calendar;charset=utf-8,${encodeURIComponent(icsContent)}`;
 
   const userOffsetHours = -currentTime.getTimezoneOffset() / 60;
@@ -106,8 +109,8 @@ const App: React.FC = () => {
 
        <div className="flex flex-col sm:flex-row items-center gap-4">
          <ActionButton
-          href="https://www.youtube.com"
-          label="Ir a YouTube"
+          href={youtubeLink}
+          label="Ir a la Clase"
           className="bg-red-600 hover:bg-red-700 focus:ring-red-500/50"
           icon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>}
         />
